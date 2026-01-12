@@ -26,6 +26,13 @@ def count(trie: Trie, query_seq: str) -> int:
 
         new_index = None # 구현하세요!
 
+        for child_idx in trie[pointer].children:
+            if trie[child_idx].body == element:
+                new_index = child_idx
+                break
+
+        assert new_index is not None
+
         pointer = new_index
 
     return cnt + int(len(trie[0].children) == 1)
