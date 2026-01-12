@@ -10,8 +10,16 @@ TODO:
 
 def fast_power(base: int, exp: int, mod: int) -> int:
     """
-    빠른 거듭제곱 알고리즘 구현
-    분할 정복을 이용, 시간복잡도 고민!
+    분할 정복(Divide and Conquer)을 이용해 거듭제곱 연산을 빠르게 수행합니다.
+    지수를 절반씩 줄여나가며 계산하여 시간 복잡도를 $O(\log \text{exp})$로 최적화합니다.
+
+    Args:
+        - base (int): 거듭제곱할 밑수.
+        - exp (int): 지수 (0 이상의 정수).
+        - mod (int): 나머지 연산을 수행할 값 (나머지 법).
+
+    Returns:
+        - result (int): (base^exp) % mod 연산의 결과값.
     """
     # 구현하세요!
     # base^0에 도달 시 1 반환

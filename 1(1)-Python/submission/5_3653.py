@@ -17,10 +17,22 @@ U = TypeVar("U")
 class SegmentTree(Generic[T, U]):
     # 구현하세요!
     """
-    범용 세그먼트 트리 클래스
+    범용적인 세그먼트 트리(Segment Tree) 자료구조 클래스입니다.
+    구간 합, 최소/최대값 쿼리 및 점 업데이트를 $O(\log N)$에 수행합니다.
 
-    - T: 실제 배열에 들어가는 원소 타입 (리프 노드)
-    - U: 구간을 대표하는 요약 값 타입 (내부 노드)
+    Attributes:
+        - n (int): 원본 배열의 원소 개수.
+        - identity (U): merge 연산의 항등원.
+        - merge (Callable[[U, U], U]): 두 구간의 값을 결합하는 함수.
+        - lift (Callable[[T], U]): 리프 노드의 값(T)을 트리 노드의 값(U)으로 변환하는 함수.
+        - arr (list[T]): 현재 세그먼트 트리가 관리하는 원본 배열.
+        - tree (list[U]): 트리의 노드들이 저장된 배열.
+
+    Methods:
+        - query: 지정된 구간의 요약 값을 반환합니다.
+        - update_set: 특정 인덱스의 값을 새로운 값으로 교체합니다.
+        - update_apply: 특정 인덱스의 값에 함수를 적용하여 갱신합니다.
+        - find_kth: 누적합 등을 기준으로 k번째 원소의 인덱스를 탐색합니다.
     """
 
     def __init__(

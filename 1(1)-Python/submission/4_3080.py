@@ -54,9 +54,29 @@ class Trie(list[TrieNode[T]]):
 
     # 구현하세요!
     def count_orders(self, fact: list[int]) -> int:
+        """
+        전체 Trie 구조 내에서 가능한 유효한 순서의 개수를 계산합니다.
+        팩토리얼 테이블을 사용하여 조합론적 경우의 수를 구합니다.
+
+        Args:
+            - fact (list[int]): 미리 계산된 팩토리얼 값들이 담긴 리스트.
+
+        Returns:
+            - total_count (int): 계산된 경우의 수 (Modulo 1,000,000,007).
+        """
         return self._dfs(0, fact)
 
     def _dfs(self, u: int, fact: list[int]) -> int:
+        """
+        깊이 우선 탐색(DFS)을 통해 각 서브트리의 경우의 수를 재귀적으로 계산합니다.
+
+        Args:
+            - u (int): 현재 탐색 중인 노드의 인덱스.
+            - fact (list[int]): 팩토리얼 테이블.
+
+        Returns:
+            - sub_res (int): 현재 노드를 루트로 하는 서브트리의 경우의 수.
+        """
         res = 1
         blocks = 0
         mod = 1_000_000_007

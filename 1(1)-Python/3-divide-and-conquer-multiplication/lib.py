@@ -11,6 +11,13 @@ TODO:
 
 
 class Matrix:
+    """
+    행렬 연산을 지원하는 클래스입니다.
+    모든 원소는 MOD(1000)로 나눈 나머지를 저장합니다.
+
+    Attributes:
+        - matrix (list[list[int]]): 행렬 데이터를 저장하는 2차원 리스트.
+    """
     MOD = 1000
 
     def __init__(self, matrix: list[list[int]]) -> None:
@@ -66,6 +73,15 @@ class Matrix:
 
     def __pow__(self, n: int) -> Matrix:
         # 구현하세요!
+        """
+        분할 정복을 이용한 행렬의 거듭제곱(** 연산)을 수행합니다.
+
+        Args:
+            - n (int): 지수 (0 이상의 정수).
+
+        Returns:
+            - result (Matrix): 거듭제곱 결과가 담긴 Matrix 객체.
+        """
         # A^0 = I
         if n == 0:
             return self.eye(self.shape[0])
@@ -90,6 +106,12 @@ class Matrix:
 
     def __repr__(self) -> str:
         # 구현하세요!
+        """
+        행렬을 문자열 형태로 표현합니다.
+
+        Returns:
+            - representation (str): 공백으로 구분된 행렬 문자열.
+        """
         lines = []
         for row in self.matrix:
             line = " ".join(str(x) for x in row)

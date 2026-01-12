@@ -9,12 +9,28 @@ TODO:
 
 
 def create_circular_queue(n: int) -> deque[int]:
-    """1부터 n까지의 숫자로 deque를 생성합니다."""
+    """
+    1부터 n까지의 숫자로 deque를 생성합니다.
+
+    Args:
+        - n (int): 큐에 담을 최대 숫자. 1부터 n까지의 범위가 생성됩니다.
+
+    Returns:
+        - queue (deque[int]): 1부터 n까지의 정수가 담긴 deque 객체.
+    """
     return deque(range(1, n + 1))
 
 def rotate_and_remove(queue: deque[int], k: int) -> int:
     """
-    큐에서 k번째 원소를 제거하고 반환합니다.
+    큐에서 k번째 원소를 찾아 제거하고 해당 값을 반환합니다.
+    1번째부터 k-1번째까지의 원소는 회전하여 큐의 뒤로 이동합니다.
+
+    Args:
+        - queue (deque[int]): 숫자들이 저장된 순환 큐 객체.
+        - k (int): 제거할 원소의 순서 (1-based index).
+
+    Returns:
+        - value (int): 큐에서 제거된 k번째 원소의 값.
     """
     value = None
     for i in range(k):
@@ -46,8 +62,15 @@ TODO:
 
 def josephus_problem(n: int, k: int) -> list[int]:
     """
-    요세푸스 문제 해결
-    n명 중 k번째마다 제거하는 순서를 반환
+    요세푸스 순열을 계산하여 반환합니다.
+    1부터 n까지의 숫자가 원형으로 배치되어 있을 때, k번째 숫자를 반복적으로 제거하는 과정을 수행합니다.
+
+    Args:
+        - n (int): 전체 사람의 수 (1부터 n까지의 정수).
+        - k (int): 매 단계마다 제거할 원소의 순서 (1-based index).
+
+    Returns:
+        - result (list[int]): 제거된 순서대로 숫자가 담긴 리스트 (요세푸스 순열).
     """
     # 구현하세요!
     # 1. 큐 생성
