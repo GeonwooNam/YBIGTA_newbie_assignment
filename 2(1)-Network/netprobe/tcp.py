@@ -37,7 +37,7 @@ def connect_one(ip: str, port: int, timeout: float):
         # HINT: time.perf_counter()를 사용하고, 단위가 초(s)이므로 1000을 곱하세요.
         
         s.connect((ip, port))
-        ms = 0.0 # TODO: ms 값을 수정하세요
+        ms = (time.perf_counter() - start) * 1000 # TODO: ms 값을 수정하세요
 
         ###########################################################
 
@@ -69,14 +69,40 @@ def connect_with_fallback(ips: list[str], port: int, timeout: float, prefer: str
 
     # TODO 1: prefer 정책에 따라 v4, v6 주소의 우선순위가 반영된 ordered 리스트를 만드세요.
     # HINT: ':' 가 포함된 IP는 IPv6, '.' 이 포함된 IP는 IPv4 입니다.
-    ordered = [] 
+    ordered = []
+    if prefer == 'any':
+        ordered = ips
+    elif prefer == 'ipv4':
+        ordered = [ip for ip in ips if '.' in ip] + [ip for ip in ips if '.' not in ip]
+    elif prefer == 'ipv6':
+        ordered = [ip for ip in ips if ':' in ip] + [ip for ip in ips if ':' not in ip]
 
     last_err: Optional[str] = None
     for ip in ordered:
         # TODO 2: connect_one을 호출하여 연결을 시도하고, 성공 시 정보를 추출하여 반환하세요.
         # HINT 1: connect_one은 성공 시 (sock, connect_ms), 실패 시 (None, error_message)를 반환합니다.
-        # HINT 2: sock.getsockname()과 sock.getpeername()을 활용하세요. 
-        pass # TODO: 로직 구현
+        # HINT 2: sock.getsockname()과 sock.getpeername()을 활용하세요.
+        output_1, output_2, output_3 = connect_one(ip, port, timeout)
+
+        if output_1:  # 연결 성공
+            sock = output_1
+            local_addr = sock.getsockname()
+            peer_addr = sock.getpeername()
+            connect_ms = output_2
+
+            return TCPConnectResult(
+                ip=ip,
+                port=port,
+                connect_ms=connect_ms,
+                local_addr=local_addr,
+                peer_addr=peer_addr,
+                error=None,
+                sock=sock
+            )
+
+        else:  # 연결 실패
+            last_err = output_3
+        # TODO: 로직 구현
 
     return TCPConnectResult(
         ip=ordered[-1] if ordered else None,

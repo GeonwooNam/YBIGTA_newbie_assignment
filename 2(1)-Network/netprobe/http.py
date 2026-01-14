@@ -13,8 +13,19 @@ def build_request(host: str, path: str) -> bytes:
     ###########################################################
     # TODO: HTTP/1.1 규격에 맞게 요청 문자열(GET, Host, Connection 헤더 포함)을 완성하세요.
     # HINT: 각 줄의 끝은 \r\n이며, 헤더의 끝에는 빈 줄(\r\n)이 하나 더 필요합니다.
-    
-    req = () # TODO: (이곳에 요청 문자열을 작성하세요)
+
+    # HTTP/1.1 규격에 맞게 요청 문자열을 구성합니다.
+    # 1. 요청 라인: GET {path} HTTP/1.1
+    # 2. Host 헤더: 필수 포함 항목
+    # 3. Connection: close 헤더: 응답 후 연결 종료를 위해 필요
+    # 4. 각 줄은 \r\n으로 끝나야 하며, 마지막에 빈 줄(\r\n)이 추가되어야 함
+
+    req = (
+        f"GET {path} HTTP/1.1\r\n"
+        f"Host: {host}\r\n"
+        f"Connection: close\r\n"
+        "\r\n"
+    )
     
     ###########################################################
 
@@ -61,6 +72,39 @@ def parse_status_and_preview(raw: bytes, max_preview: int = 200) -> tuple[Option
     status_code = None
     preview = ""
     error = None
+
+    # 1. b"\r\n\r\n"를 기준으로 헤더와 바디를 분리합니다.
+    header_end_idx = raw.find(b"\r\n\r\n")
+    if header_end_idx == -1:
+        return None, "", "Invalid HTTP response: Header separator not found"
+
+    header_raw = raw[:header_end_idx]
+    body_raw = raw[header_end_idx + 4:]
+
+    try:
+        # 2. 헤더 영역을 decode하고 Status Line에서 상태 코드를 추출합니다.
+        header_text = header_raw.decode("utf-8")
+        lines = header_text.split("\r\n")
+        if not lines:
+            return None, "", "Invalid HTTP response: Empty header"
+
+        # Status Line 예시: "HTTP/1.1 200 OK"
+        status_line = lines[0]
+        status_parts = status_line.split()
+
+        if len(status_parts) >= 2:
+            try:
+                status_code = int(status_parts[1])  # 두 번째 요소가 상태 코드입니다.
+            except ValueError:
+                error = "Invalid status code format"
+        else:
+            error = "Invalid status line format"
+
+        # 3. 바디 영역을 max_preview 만큼 decode하여 preview를 만듭니다.
+        preview = body_raw[:max_preview].decode("utf-8", errors="replace")
+
+    except Exception as e:
+        error = f"Parsing error: {str(e)}"
 
     ###########################################################
     
