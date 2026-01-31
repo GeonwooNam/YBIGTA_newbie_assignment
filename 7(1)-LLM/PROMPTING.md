@@ -3,10 +3,10 @@
 
 ## 1. 각 Prompting의 0/3/5 shot 정답률
 | | 0 shot | 3 shot | 5 shot |
-|---|--------|---|---|
-|direct prompting | 0.80   | 0.76 | 0.78|
-|CoT prompting| 0.88   | 0.72 | 0.78 |
-|My prompting | 0.88   | | |
+|---|--------|--------|--------|
+|direct prompting | 0.80   | 0.76   | 0.78   |
+|CoT prompting| 0.88   | 0.72   | 0.78   |
+|My prompting | 0.88   | 0.84   | 0.84   |
 
 ## 2. CoT Prompting이 Direct Prompting에 비해 왜 좋을 수 있는지
 1. 추론의 분해와 작업 기억 확보: Direct Prompting은 질문과 정답 사이의 직접적인 매핑만을 수행하므로, 중간 단계가 많은 수학 문제에서 논리적 비약이 발생하기 쉽습니다. 반면 CoT는 문제를 작은 단위의 하위 문제로 분해하여 단계별로 처리하게 함으로써 모델에게 일종의 '작업 기억(Working Memory)' 공간을 제공합니다.
