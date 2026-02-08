@@ -29,11 +29,11 @@ def search(query: str, top_k: int = 10) -> list[dict]:
     """
     query_vector = embed_query(query)
     pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
-    index = pc.Index(os.getenv("PINECONE_INDEX"))
+    index = pc.Index(os.getenv("PINECONE_INDEX", ""))
 
     resp = index.query(vector=query_vector, top_k=top_k, include_metadata=True)
     results = []
-    for match in resp["matches"]:
+    for match in resp.matches:  # type: ignore[union-attr]
         results.append({
             "id": match["id"],
             "text": match["metadata"]["text"],
